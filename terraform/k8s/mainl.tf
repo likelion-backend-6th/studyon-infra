@@ -2,7 +2,7 @@ terraform {
 
   backend "s3" {
     shared_credentials_file     = ".credentials"
-    bucket                      = "tractproject1"
+    bucket                      = "study-on"
     key                         = "k8s/terraform.tfstate"
     region                      = "kr-standard"
     endpoint                    = "https://kr.object.ncloudstorage.com"
