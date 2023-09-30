@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "studyon.db.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "studyon.db.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.dbService.type }}
+  ports:
+    - port: {{ .Values.dbService.port }}
+      targetPort: {{ .Values.dbService.port }}
+      protocol: TCP
+  selector:
+    {{- include "studyon.db.selectorLabels" . | nindent 4 }}

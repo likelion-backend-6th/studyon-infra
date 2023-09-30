@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "studyon.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+data:
+  DB_HOST: {{ include "studyon.db.fullname" . }}
+  RUN_MODE: {{ .Values.django.configMap.RUN_MODE }}
