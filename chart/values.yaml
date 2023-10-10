@@ -12,7 +12,7 @@ fullnameOverride: ""
 
 service:
   type: LoadBalancer
-  port: 80
+  port: 443
 
 dbService:
   type: ClusterIP

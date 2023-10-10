@@ -5,10 +5,17 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "studyon.labels" . | nindent 4 }}
+  annotations:
+    service.beta.kubernetes.io/ncloud-load-balancer-tls-ports: "443"
+    service.beta.kubernetes.io/ncloud-load-balancer-ssl-certificate-no: "20673"
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
+    - port: 443
+      targetPort: http
+      protocol: TCP
+      name: https
+    - port: 80
       targetPort: http
       protocol: TCP
       name: http
