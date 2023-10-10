@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "studyon.redis.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "studyon.redis.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.redisService.type }}
+  ports:
+    - port: {{ .Values.redisService.port }}
+      targetPort: {{ .Values.redisService.port }}
+      protocol: TCP
+  selector:
+    {{- include "studyon.redis.selectorLabels" . | nindent 4 }}

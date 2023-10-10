@@ -32,6 +32,15 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 {{- end }}
 
+{{- define "studyon.redis.fullname" -}}
+{{- $name := .Chart.Name }}
+{{- if contains $name .Release.Name }}
+{{- printf "%s-%s" "redis" .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s-%s" "redis" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+
 {{/*
 Create chart name and version as used by the chart label.
 */}}
@@ -57,6 +66,12 @@ helm.sh/chart: {{ include "studyon.chart" . }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
+{{- define "studyon.redis.labels" -}}
+helm.sh/chart: {{ include "studyon.chart" . }}
+{{ include "studyon.redis.selectorLabels" . }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
 {{/*
 Selector labels
 */}}
@@ -67,5 +82,10 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 
 {{- define "studyon.db.selectorLabels" -}}
 app.kubernetes.io/name: db-{{ include "studyon.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{- define "studyon.redis.selectorLabels" -}}
+app.kubernetes.io/name: redis-{{ include "studyon.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}

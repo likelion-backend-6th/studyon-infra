@@ -18,6 +18,10 @@ dbService:
   type: ClusterIP
   port: 5432
 
+redisService:
+  type: ClusterIP
+  port: 6379
+
 django:
   replicaCount: 1
   containerPort: 8000
@@ -51,3 +55,12 @@ db:
     POSTGRES_USER: enter_your_db_user
     POSTGRES_PASSWORD: enter_your_db_password
     POSTGRES_PORT: "5432"
+
+redis:
+  configMap:
+    redis_conf: |
+      maxmemory-policy allkeys-lru
+      maxclients 4064
+      save ""
+      stop-writes-on-bgsave-error no
+      tcp-backlog 511

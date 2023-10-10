@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ include "studyon.redis.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "studyon.redis.labels" . | nindent 4 }}
+spec:
+  containers:
+    - name: {{ include "studyon.redis.fullname" . }}
+      image: redis:latest
+      command:
+      - sh
+      - -c
+      - |
+        echo never > /sys/kernel/mm/transparent_hugepage/enabled
+        echo never > /sys/kernel/mm/transparent_hugepage/defrag
+        echo "net.core.somaxconn = 512" >> /etc/sysctl.conf
+        echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
+        redis-server /redis-master/redis.conf --bind 0.0.0.0
+      env:
+      - name: MASTER
+        value: "true"
+      envFrom:
+        - configMapRef:
+            name: {{ include "studyon.redis.fullname" . }}
+      ports:
+        - containerPort: {{ .Values.redisService.port }}
+      volumeMounts:
+      - mountPath: /redis-master
+        name: config
+  volumes:
+    - name: config
+      configMap:
+        name: {{ include "studyon.redis.fullname" . }}
+        items:
+        - key: redis_conf
+          path: redis.conf
+    
