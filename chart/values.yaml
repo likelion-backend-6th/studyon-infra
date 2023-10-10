@@ -58,7 +58,7 @@ db:
 
 redis:
   configMap:
-    redis-conf: |
+    redis_conf: |
       maxmemory-policy allkeys-lru
       maxclients 4064
       save ""

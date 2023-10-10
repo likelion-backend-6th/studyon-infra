@@ -3,6 +3,5 @@ kind: ConfigMap
 metadata:
   name: {{ include "studyon.redis.fullname" . }}
   namespace: {{ .Release.Namespace }}
-data:
-  redis-conf: |
-    {{ .Values.redis.configMap.redis-conf }}
+data: 
+  redis_conf: {{- .Values.redis.configMap.redis_conf | toYaml | indent 2 }}
