@@ -12,7 +12,7 @@ fullnameOverride: ""
 
 service:
   type: LoadBalancer
-  port: 80
+  port: 443
 
 dbService:
   type: ClusterIP
@@ -22,9 +22,28 @@ django:
   replicaCount: 1
   containerPort: 8000
   configMap:
-    RUN_MODE: "staging"
+    DJANGO_SETTINGS_MODULE: "config.settings.staging"
   secret:
-    DJANGO_SECRET_KEY: enter_your_secret_key
+    # Django
+    DJANGO_SECRET_KEY: enter_your_django_secret_key
+    # NCP
+    NCP_S3_ACCESS_KEY: enter_your_ncp_access_key
+    NCP_S3_SECRET_KEY: enter_your_ncp_secret_key
+    NCP_S3_ENDPOINT_URL: enter_your_object_storage_endpoint_url
+    NCP_S3_REGION_NAME: "kr-standard"
+    NCP_S3_BUCKET_NAME: "studyon"
+    # AWS
+    AWS_S3_ACCESS_KEY_ID: enter_your_s3_access_key
+    AWS_S3_SECRET_ACCESS_KEY: enter_your_s3_secret_key
+    AWS_S3_REGION: "ap-northeast-2"
+    AWS_S3_STORAGE_BUCKET_NAME: enter_your_s3_bucket_name
+    # SOCIAL LOGIN
+    NAVER_CLIENT_ID: enter_your_naver_client_id
+    NAVER_SECRET_KEY: enter_your_naver_client_secret
+    GITHUB_CLIENT_ID: enter_your_github_client_id
+    GITHUB_SECRET_KEY: enter_your_github_client_secret
+    GOOGLE_CLIENT_ID: enter_your_google_client_id
+    GOOGLE_SECRET_KEY: enter_your_google_client_secret
 
 db:
   secret:

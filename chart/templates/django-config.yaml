@@ -5,4 +5,6 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   DB_HOST: {{ include "studyon.db.fullname" . }}
-  RUN_MODE: {{ .Values.django.configMap.RUN_MODE }}
+  {{- range $key, $value := .Values.django.configMap }}
+  {{ $key }}: {{ $value | quote }}
+  {{- end }}
