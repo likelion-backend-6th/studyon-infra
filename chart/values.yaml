@@ -22,6 +22,10 @@ redisService:
   type: ClusterIP
   port: 6379
 
+flowerService:
+  type: LoadBalancer
+  port: 5555
+
 django:
   replicaCount: 1
   containerPort: 8000
@@ -64,3 +68,6 @@ redis:
       save ""
       stop-writes-on-bgsave-error no
       tcp-backlog 511
+
+flower:
+  containerPort: 5555
