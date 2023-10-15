@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ include "studyon.flower.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "studyon.celery.labels" . | nindent 4 }}
+spec:
+  {{- with .Values.imagePullSecrets }}
+  imagePullSecrets:
+    {{- toYaml . | nindent 8 }}
+  {{- end }}
+  containers:
+    - name: {{ include "studyon.flower.fullname" . }}
+      image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+      imagePullPolicy: {{ .Values.image.pullPolicy }}
+      envFrom: 
+        - configMapRef: 
+          name: {{ include "studyon.fullname" . }}
+        - secretRef:
+          name: {{ include "studyon.fullname" . }}
+        - secretRef:
+          name: {{ include "studyon.db.fullname" . }}
+      ports:
+        - name: flower
+          containerPort: {{ .Values.flower.containerPort }}
+          protocol: TCP
+      command: ["celery", "-A", "config", "flower", "-l", "info"]
