@@ -41,6 +41,33 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 {{- end }}
 
+{{- define "studyon.celery.fullname" -}}
+{{- $name := .Chart.Name }}
+{{- if contains $name .Release.Name }}
+{{- printf "%s-%s" "celery" .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s-%s" "celery" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+
+{{- define "studyon.beat.fullname" -}}
+{{- $name := .Chart.Name }}
+{{- if contains $name .Release.Name }}
+{{- printf "%s-%s" "beat" .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s-%s" "beat" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+
+{{- define "studyon.flower.fullname" -}}
+{{- $name := .Chart.Name }}
+{{- if contains $name .Release.Name }}
+{{- printf "%s-%s" "flower" .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s-%s" "flower" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+
 {{/*
 Create chart name and version as used by the chart label.
 */}}
@@ -72,6 +99,12 @@ helm.sh/chart: {{ include "studyon.chart" . }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
+{{- define "studyon.celery.labels" -}}
+helm.sh/chart: {{ include "studyon.chart" . }}
+{{ include "studyon.celery.selectorLabels" . }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
 {{/*
 Selector labels
 */}}
@@ -87,5 +120,10 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 
 {{- define "studyon.redis.selectorLabels" -}}
 app.kubernetes.io/name: redis-{{ include "studyon.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{- define "studyon.celery.selectorLabels" -}}
+app.kubernetes.io/name: celery-{{ include "studyon.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
