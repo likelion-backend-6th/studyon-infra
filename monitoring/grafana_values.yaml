@@ -1,0 +1,13 @@
+service:
+  enabled: true
+  type: LoadBalancer
+  port: 443
+  annotations:
+    service.beta.kubernetes.io/ncloud-load-balancer-tls-ports: "443"
+    service.beta.kubernetes.io/ncloud-load-balancer-ssl-certificate-no: "20673"
+
+persistence:
+  enabled: true
+
+adminUser: ""
+adminPassword: ""
