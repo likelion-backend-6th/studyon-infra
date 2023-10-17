@@ -5,11 +5,19 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "studyon.celery.labels" . | nindent 4 }}
+  annotations:
+    service.beta.kubernetes.io/ncloud-load-balancer-tls-ports: "443"
+    service.beta.kubernetes.io/ncloud-load-balancer-ssl-certificate-no: "20673"
 spec:
   type: {{ .Values.flowerService.type }}
   ports:
-    - port: {{ .Values.flowerService.port }}
+    - port: 443
       targetPort: {{ .Values.flower.containerPort }}
       protocol: TCP
+      name: https
+    - port: 80
+      targetPort: {{ .Values.flower.containerPort }}
+      protocol: TCP
+      name: http
   selector:
     {{- include "studyon.celery.selectorLabels" . | nindent 4 }}
