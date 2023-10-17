@@ -16,11 +16,11 @@ spec:
       imagePullPolicy: {{ .Values.image.pullPolicy }}
       envFrom: 
         - configMapRef: 
-          name: {{ include "studyon.fullname" . }}
+            name: {{ include "studyon.fullname" . }}
         - secretRef:
-          name: {{ include "studyon.fullname" . }}
+            name: {{ include "studyon.fullname" . }}
         - secretRef:
-          name: {{ include "studyon.db.fullname" . }}
+            name: {{ include "studyon.db.fullname" . }}
       ports:
         - name: http
           containerPort: {{ .Values.django.containerPort }}
@@ -45,11 +45,11 @@ spec:
       imagePullPolicy: {{ .Values.image.pullPolicy }}
       envFrom: 
         - configMapRef: 
-          name: {{ include "studyon.fullname" . }}
+            name: {{ include "studyon.fullname" . }}
         - secretRef:
-          name: {{ include "studyon.fullname" . }}
+            name: {{ include "studyon.fullname" . }}
         - secretRef:
-          name: {{ include "studyon.db.fullname" . }}
+            name: {{ include "studyon.db.fullname" . }}
       ports:
         - name: http
           containerPort: {{ .Values.django.containerPort }}
